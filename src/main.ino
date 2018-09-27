@@ -19,8 +19,10 @@ Variables globales et defines
 // L'ensemble des fonctions y ont acces
 int roueDroite;
 int roueGauche;
-float avancerSpeed = 0.6;
-float tournerSpeed = 0.2;
+float avancerSpeed;
+float baseSpeed = 0.2;
+float topSpeed = 0.6;
+float tournerSpeed = 0.6;
 float diff= 0.05;
 float ticParCM = 3200/(7.7*PI);
 float tour = 4000;
@@ -49,6 +51,11 @@ void setup(){
   ENCODER_Reset(0);
   ENCODER_Reset(1);
   Serial.begin(9600);
+  
+
+  
+  //CODE ALLER
+  
   //A
   AvancerEnLigneDroite(200); 
   //B
@@ -65,15 +72,15 @@ void setup(){
   AvancerEnLigneDroite(8);
   //F
   TournerDroite(35);
-  AvancerEnLigneDroite(50);
+  AvancerEnLigneDroite(38);
   //G
   TournerGauche(90);
-  AvancerEnLigneDroite(45);
+  AvancerEnLigneDroite(55);
   //H
   TournerDroite(45);
   AvancerEnLigneDroite(50);
   //I
-  TournerDroite(18);
+  TournerDroite(14);
   AvancerEnLigneDroite(50);
   //J
   TournerSurLui(1);
@@ -133,17 +140,36 @@ void AvancerEnLigneDroite(int cm){
   int distance = cm*ticParCM;
   ENCODER_Reset(0);
   ENCODER_Reset(1);
+  avancerSpeed = baseSpeed;
   MOTOR_SetSpeed(0,avancerSpeed);
   MOTOR_SetSpeed(1,avancerSpeed);
+
   do
   {
     roueGauche = ENCODER_Read(0);
     roueDroite = ENCODER_Read(1);
     
+    Serial.print("avancerSpeed = ");
+    Serial.print(avancerSpeed); 
+    
+    if (roueGauche >( distance - (8 * ticParCM)))
+    {
+      if(avancerSpeed>baseSpeed) avancerSpeed -= 0.05;   
+    }
+     else if (avancerSpeed < topSpeed)
+    {
+      avancerSpeed += 0.02;
+    } 
+
+ 
+    
+     
+
     if(abs(roueGauche-roueDroite)<10) diff = 0.05;
     else if (abs(roueGauche-roueDroite)<100) diff = 0.25;
     else diff = 0.5;
 
+    
     if (roueGauche > roueDroite) {
       MOTOR_SetSpeed(0,avancerSpeed*(1-diff));
       MOTOR_SetSpeed(1,avancerSpeed*(1+diff));
@@ -165,10 +191,10 @@ void AvancerEnLigneDroite(int cm){
     {
       MOTOR_SetSpeed(0,avancerSpeed);
       MOTOR_SetSpeed(1,avancerSpeed);
-      //Serial.print("   Droite= ");
-      //Serial.print(baseSpeed*(1));
-      //Serial.print("  Gauche = ");
-      //Serial.print(baseSpeed*(1));
+      Serial.print("   Droite= ");
+      Serial.print(baseSpeed*(1));
+      Serial.print("  Gauche = ");
+      Serial.print(baseSpeed*(1));
     }
     //Serial.println();
     Serial.println(roueGauche);
