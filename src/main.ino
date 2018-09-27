@@ -12,8 +12,6 @@ Inclure les librairies de functions que vous voulez utiliser
 
 #include <LibRobus.h> // Essentielle pour utiliser RobUS
 
-
-
 /* ****************************************************************************
 Variables globales et defines
 **************************************************************************** */
@@ -21,9 +19,12 @@ Variables globales et defines
 // L'ensemble des fonctions y ont acces
 int roueDroite;
 int roueGauche;
-float baseSpeed = 0.2;
+float avancerSpeed = 0.6;
+float tournerSpeed = 0.2;
 float diff= 0.05;
+float ticParCM = 3200/(7.7*PI);
 float tour = 4000;
+int test = 4000;
 
 
 /* ****************************************************************************
@@ -48,15 +49,36 @@ void setup(){
   ENCODER_Reset(0);
   ENCODER_Reset(1);
   Serial.begin(9600);
-  AvancerEnLigneDroite(4000); 
+  //A
+  AvancerEnLigneDroite(200); 
+  //B
+  TournerGauche(90);
+  AvancerEnLigneDroite(40);
+  //C
+  TournerDroite(90);   
+  AvancerEnLigneDroite(30);
+  //D
   TournerDroite(90);
-  AvancerEnLigneDroite(1500);
-  TournerGauche(180);   
-  AvancerEnLigneDroite(3000);
-  TournerGauche(180);
-  AvancerEnLigneDroite(1500);
-  TournerDroite(90);
-  AvancerEnLigneDroite(4000);
+  AvancerEnLigneDroite(30);
+  //E
+  TournerGauche(90);
+  AvancerEnLigneDroite(8);
+  //F
+  TournerDroite(35);
+  AvancerEnLigneDroite(50);
+  //G
+  TournerGauche(90);
+  AvancerEnLigneDroite(45);
+  //H
+  TournerDroite(45);
+  AvancerEnLigneDroite(50);
+  //I
+  TournerDroite(18);
+  AvancerEnLigneDroite(50);
+  //J
+  TournerSurLui(1);
+  // 
+  
 }
 
 
@@ -83,7 +105,7 @@ void TournerGauche(float degre){
   ENCODER_Reset(0);
   ENCODER_Reset(1);
   MOTOR_SetSpeed(0,0);
-  MOTOR_SetSpeed(1,baseSpeed);
+  MOTOR_SetSpeed(1,tournerSpeed);
   do{
     roueDroite = ENCODER_Read(1);
     //Serial.println(roueDroite);
@@ -96,7 +118,7 @@ void TournerGauche(float degre){
 void TournerDroite(float degre){
   ENCODER_Reset(0);
   ENCODER_Reset(1);
-  MOTOR_SetSpeed(0,baseSpeed);
+  MOTOR_SetSpeed(0,tournerSpeed);
   MOTOR_SetSpeed(1,0);
   do{
     roueGauche = ENCODER_Read(0);
@@ -107,11 +129,12 @@ void TournerDroite(float degre){
   MOTOR_SetSpeed(1,0);
 }
 
-void AvancerEnLigneDroite(int distance){
+void AvancerEnLigneDroite(int cm){
+  int distance = cm*ticParCM;
   ENCODER_Reset(0);
   ENCODER_Reset(1);
-  MOTOR_SetSpeed(0,baseSpeed);
-  MOTOR_SetSpeed(1,baseSpeed);
+  MOTOR_SetSpeed(0,avancerSpeed);
+  MOTOR_SetSpeed(1,avancerSpeed);
   do
   {
     roueGauche = ENCODER_Read(0);
@@ -122,8 +145,8 @@ void AvancerEnLigneDroite(int distance){
     else diff = 0.5;
 
     if (roueGauche > roueDroite) {
-      MOTOR_SetSpeed(0,baseSpeed*(1-diff));
-      MOTOR_SetSpeed(1,baseSpeed*(1+diff));
+      MOTOR_SetSpeed(0,avancerSpeed*(1-diff));
+      MOTOR_SetSpeed(1,avancerSpeed*(1+diff));
       //Serial.print("   Droite= ");
       //Serial.print(baseSpeed*(1+diff));
       //Serial.print("  Gauche = ");
@@ -131,8 +154,8 @@ void AvancerEnLigneDroite(int distance){
 
     }
     else if (roueDroite > roueGauche) {
-      MOTOR_SetSpeed(0,baseSpeed*(1+diff));
-      MOTOR_SetSpeed(1,baseSpeed*(1-diff));
+      MOTOR_SetSpeed(0,avancerSpeed*(1+diff));
+      MOTOR_SetSpeed(1,avancerSpeed*(1-diff));
       //Serial.print("   Droite= ");
       //Serial.print(baseSpeed*(1-diff));
       //Serial.print("  Gauche = ");
@@ -140,8 +163,8 @@ void AvancerEnLigneDroite(int distance){
     } 
     else
     {
-      MOTOR_SetSpeed(0,baseSpeed);
-      MOTOR_SetSpeed(1,baseSpeed);
+      MOTOR_SetSpeed(0,avancerSpeed);
+      MOTOR_SetSpeed(1,avancerSpeed);
       //Serial.print("   Droite= ");
       //Serial.print(baseSpeed*(1));
       //Serial.print("  Gauche = ");
@@ -154,4 +177,19 @@ void AvancerEnLigneDroite(int distance){
   MOTOR_SetSpeed(0,0);
   MOTOR_SetSpeed(1,0);
    
+}
+
+void TournerSurLui(float degre){
+  ENCODER_Reset(0);
+  ENCODER_Reset(1);
+  MOTOR_SetSpeed(0,-tournerSpeed);
+  MOTOR_SetSpeed(1,tournerSpeed);
+  do{
+    roueDroite = ENCODER_Read(1);
+    roueGauche = ENCODER_Read(0);
+    //Serial.println(roueDroite);
+  }while(roueDroite < test);
+  Serial.println(tour*degre/90);
+  MOTOR_SetSpeed(0,0);
+  MOTOR_SetSpeed(1,0);
 }
