@@ -77,7 +77,32 @@ void setup(){
   AvancerEnLigneDroite(50);
   //J
   TournerSurLui(1);
-  // 
+  AvancerEnLigneDroite(76);
+  // I
+  TournerGauche(13);
+  AvancerEnLigneDroite(41);
+  //H
+  TournerGauche(45);
+  AvancerEnLigneDroite(73);
+  //G
+  TournerDroite(90);
+  AvancerEnLigneDroite(47);
+  //F
+  TournerGauche(45);
+  AvancerEnLigneDroite(32);
+  //E
+  TournerDroite(90);
+  AvancerEnLigneDroite(50);
+  //D
+  TournerGauche(90);
+  AvancerEnLigneDroite(45);
+  //C
+  TournerGauche(90);
+  AvancerEnLigneDroite(50);
+  //B
+  TournerDroite(90);
+  //A
+  AvancerEnLigneDroite(223);
   
 }
 
