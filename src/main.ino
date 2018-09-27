@@ -19,8 +19,10 @@ Variables globales et defines
 // L'ensemble des fonctions y ont acces
 int roueDroite;
 int roueGauche;
+float baseSpeed = 0.4;
+float topSpeed = 0.6;
 float avancerSpeed = 0.6;
-float tournerSpeed = 0.2;
+float tournerSpeed = 0.4;
 float diff= 0.05;
 float ticParCM = 3200/(7.7*PI);
 float tour = 4000;
@@ -56,7 +58,7 @@ void setup(){
   AvancerEnLigneDroite(40);
   //C
   TournerDroite(90);   
-  AvancerEnLigneDroite(30);
+  AvancerEnLigneDroite(20);
   //D
   TournerDroite(90);
   AvancerEnLigneDroite(30);
@@ -65,18 +67,18 @@ void setup(){
   AvancerEnLigneDroite(8);
   //F
   TournerDroite(35);
-  AvancerEnLigneDroite(50);
+  AvancerEnLigneDroite(40);
   //G
   TournerGauche(90);
-  AvancerEnLigneDroite(45);
+  AvancerEnLigneDroite(50);
   //H
-  TournerDroite(45);
+  TournerDroite(50);
   AvancerEnLigneDroite(50);
   //I
   TournerDroite(18);
   AvancerEnLigneDroite(50);
   //J
-  TournerSurLui(1);
+  TournerSurLui(190);
   // 
   
 }
@@ -133,6 +135,7 @@ void AvancerEnLigneDroite(int cm){
   int distance = cm*ticParCM;
   ENCODER_Reset(0);
   ENCODER_Reset(1);
+  avancerSpeed = baseSpeed;
   MOTOR_SetSpeed(0,avancerSpeed);
   MOTOR_SetSpeed(1,avancerSpeed);
   do
@@ -140,6 +143,8 @@ void AvancerEnLigneDroite(int cm){
     roueGauche = ENCODER_Read(0);
     roueDroite = ENCODER_Read(1);
     
+    if(roueGauche > 5*ticParCM) avancerSpeed = topSpeed;
+
     if(abs(roueGauche-roueDroite)<10) diff = 0.05;
     else if (abs(roueGauche-roueDroite)<100) diff = 0.25;
     else diff = 0.5;
@@ -188,8 +193,8 @@ void TournerSurLui(float degre){
     roueDroite = ENCODER_Read(1);
     roueGauche = ENCODER_Read(0);
     //Serial.println(roueDroite);
-  }while(roueDroite < test);
-  Serial.println(tour*degre/90);
+  }while(roueDroite < tour*degre/180);
+  Serial.println(tour*degre/180);
   MOTOR_SetSpeed(0,0);
   MOTOR_SetSpeed(1,0);
 }
