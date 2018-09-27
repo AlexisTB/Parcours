@@ -14,6 +14,7 @@ Inclure les librairies de functions que vous voulez utiliser
 
 
 
+
 /* ****************************************************************************
 Variables globales et defines
 **************************************************************************** */
@@ -38,8 +39,11 @@ Fonctions d'initialisation (setup)
 // -> Generalement on y initilise les varibbles globales
 
 void setup(){
-  BoardInit();
-  AvancerEnLigneDroite();
+boardinit();
+AvancerEnLigneDroite();
+serial.begin(9600);
+
+delay(1000);
 }
 
 
@@ -49,6 +53,10 @@ Fonctions de boucle infini (loop())
 // -> Se fait appeler perpetuellement suite au "setup"
 
 void loop() {
+  MOTOR_setspeed(1,.1 )
+  serial.print("Test")
+
+
   // SOFT_TIMER_Update(); // A decommenter pour utiliser des compteurs logiciels
 
   delay(10);// Delais pour décharger le CPU
