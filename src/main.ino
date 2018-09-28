@@ -26,7 +26,7 @@ float tournerSpeed = 0.4;
 float diff= 0.05;
 float ticParCM = 3200/(7.7*PI);
 float tour = 4000;
-int test = 4000;
+int test = 3650;
 
 
 /* ****************************************************************************
@@ -51,6 +51,8 @@ void setup(){
   ENCODER_Reset(0);
   ENCODER_Reset(1);
   Serial.begin(9600);
+  
+
   //A
   AvancerEnLigneDroite(200); 
   //B
@@ -72,15 +74,44 @@ void setup(){
   TournerGauche(90);
   AvancerEnLigneDroite(50);
   //H
-  TournerDroite(50);
+  TournerDroite(45);
   AvancerEnLigneDroite(50);
   //I
-  TournerDroite(18);
+  TournerDroite(20);
   AvancerEnLigneDroite(50);
-  //J
-  TournerSurLui(190);
-  // 
+  //J 
   
+  //FINIALLER
+  delay(20);
+  TournerSurLui(180);
+  delay(20);
+  AvancerEnLigneDroite(76);
+  // I
+  TournerGauche(20);
+  AvancerEnLigneDroite(31);
+  //H
+  TournerGauche(50);
+  AvancerEnLigneDroite(50);
+  //G
+  TournerDroite(90);
+  AvancerEnLigneDroite(37);
+  //F
+  TournerGauche(35);
+  AvancerEnLigneDroite(12);
+  //E
+  TournerDroite(90);
+  AvancerEnLigneDroite(25);
+  //D
+  TournerGauche(90);
+  AvancerEnLigneDroite(35);
+  //C
+  TournerGauche(90);
+  AvancerEnLigneDroite(25);
+  //B
+  TournerDroite(90);
+  //A
+  AvancerEnLigneDroite(213);
+
 }
 
 
@@ -131,7 +162,7 @@ void TournerDroite(float degre){
   MOTOR_SetSpeed(1,0);
 }
 
-void AvancerEnLigneDroite(int cm){
+void AvancerEnLigneDroite(float cm){
   int distance = cm*ticParCM;
   ENCODER_Reset(0);
   ENCODER_Reset(1);
@@ -187,14 +218,14 @@ void AvancerEnLigneDroite(int cm){
 void TournerSurLui(float degre){
   ENCODER_Reset(0);
   ENCODER_Reset(1);
-  MOTOR_SetSpeed(0,-tournerSpeed);
-  MOTOR_SetSpeed(1,tournerSpeed);
+  MOTOR_SetSpeed(0,-.2);
+  MOTOR_SetSpeed(1,.2);
   do{
     roueDroite = ENCODER_Read(1);
     roueGauche = ENCODER_Read(0);
     //Serial.println(roueDroite);
-  }while(roueDroite < tour*degre/180);
-  Serial.println(tour*degre/180);
+  }while(roueDroite < test*degre/180);
+  Serial.println(test*degre/180);
   MOTOR_SetSpeed(0,0);
   MOTOR_SetSpeed(1,0);
 }
