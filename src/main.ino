@@ -44,67 +44,71 @@ void setup(){
   ENCODER_Reset(1);
   Serial.begin(9600);
   
-  Calibration();
+  //AvancerEnLigneDroiteInt(200);
+  //Calibration();
   //TournerSurLui(180);
+  //TournerDroit(90);
+  //TournerGauche(90);
 
-  // //A
-  // AvancerEnLigneDroite(200); 
-  // //B
-  // TournerGauche(90);
-  // AvancerEnLigneDroite(40);
-  // //C
-  // TournerDroite(90);   
-  // AvancerEnLigneDroite(20);
-  // //D
-  // TournerDroite(90);
-  // AvancerEnLigneDroite(30);
-  // //E
-  // TournerGauche(90);
-  // AvancerEnLigneDroite(8);
-  // //F
-  // TournerDroite(35);
-  // AvancerEnLigneDroite(40);
-  // //G
-  // TournerGauche(90);
-  // AvancerEnLigneDroite(50);
-  // //H
-  // TournerDroite(45);
-  // AvancerEnLigneDroite(50);
-  // //I
-  // TournerDroite(20);
-  // AvancerEnLigneDroite(50);
-  // //J 
+  //A
+  AvancerEnLigneDroiteInt(200);  
+  //B
+  TournerGauche(90);
+  AvancerEnLigneDroiteInt(35); //40
+  //C
+  TournerDroite(90);   
+  AvancerEnLigneDroiteInt(20);
+  //D
+  TournerDroite(90);
+  AvancerEnLigneDroiteInt(25); //30
+  //E
+  TournerGauche(90);
+  AvancerEnLigneDroiteInt(8);
+  //F
+  TournerDroite(45);
+  AvancerEnLigneDroiteInt(40);
+  //G
+  TournerGauche(90);
+  AvancerEnLigneDroiteInt(55); //50
+  //H
+  TournerDroite(50);//45
+  AvancerEnLigneDroiteInt(100);//50
+  //I
+  //TournerDroite(12.5);
+  //AvancerEnLigneDroiteInt(50);
+  //J 
   
-  // //FINIALLER
-  // delay(20);
-  // TournerSurLui(180);
-  // delay(20);
-  // AvancerEnLigneDroite(76);
-  // // I
-  // TournerGauche(20);
-  // AvancerEnLigneDroite(31);
-  // //H
-  // TournerGauche(50);
-  // AvancerEnLigneDroite(50);
-  // //G
-  // TournerDroite(90);
-  // AvancerEnLigneDroite(37);
-  // //F
-  // TournerGauche(35);
-  // AvancerEnLigneDroite(12);
-  // //E
-  // TournerDroite(90);
-  // AvancerEnLigneDroite(25);
-  // //D
-  // TournerGauche(90);
-  // AvancerEnLigneDroite(35);
-  // //C
-  // TournerGauche(90);
-  // AvancerEnLigneDroite(25);
-  // //B
-  // TournerDroite(90);
-  // //A
-  // AvancerEnLigneDroite(213);
+  //FINIALLER
+  //delay(20);
+  TournerSurLui(180);
+  //delay(20);
+
+  AvancerEnLigneDroiteInt(107);//76
+  // I
+  //TournerGauche(12.5);
+  //AvancerEnLigneDroiteInt(31);
+  //H
+  TournerGauche(55);//50
+  AvancerEnLigneDroiteInt(50);
+  //G
+  TournerDroite(90);
+  AvancerEnLigneDroiteInt(37);
+  //F
+  TournerGauche(45);
+  AvancerEnLigneDroiteInt(12);
+  //E
+  TournerDroite(90);
+  AvancerEnLigneDroiteInt(25);
+  //D
+  TournerGauche(90);
+  AvancerEnLigneDroiteInt(20);
+  //C
+  TournerGauche(90);
+  AvancerEnLigneDroiteInt(25);
+  //B
+  TournerDroite(90);
+  //A
+  AllerFuckingVite(200);
 
 }
 

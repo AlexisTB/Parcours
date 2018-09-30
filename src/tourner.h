@@ -8,45 +8,70 @@ void TournerGauche(float degre){
   ENCODER_Reset(0);
   ENCODER_Reset(1);
   MOTOR_SetSpeed(0,0);
-  MOTOR_SetSpeed(1,tournerSpeed);
+  float tournerSpeed2 = 0.1;
+  float encodeurDroite;
   do{
-    roueDroite = ENCODER_Read(1);
+    MOTOR_SetSpeed(1,tournerSpeed2);
+
+    if (encodeurDroite > tourGauche*degre/90 - 200){
+     if ( tournerSpeed2 > 0.1) tournerSpeed2 -= 0.01 ;
+    }
+    else if (tournerSpeed2 < .4) tournerSpeed2 += 0.01;
+    encodeurDroite = ENCODER_Read(1);
+    
     //Serial.println(roueDroite);
-  }while(roueDroite < tour*degre/90);
-  Serial.println(tour*degre/90);
+  }while(encodeurDroite < tourGauche*degre/90);
+  Serial.println(tourGauche*degre/90);
   MOTOR_SetSpeed(0,0);
   MOTOR_SetSpeed(1,0);
+    delay(100);
 }
 
 void TournerDroite(float degre){
   ENCODER_Reset(0);
   ENCODER_Reset(1);
-  MOTOR_SetSpeed(0,tournerSpeed);
-  MOTOR_SetSpeed(1,0);
+  MOTOR_SetSpeed(0,0);
+  float tournerSpeed2 = 0.1;
+  float encodeurGauche;
   do{
-    roueGauche = ENCODER_Read(0);
-    //Serial.println(roueGauche);
-  }while(roueGauche < tour*degre/90);
-  //Serial.println("fini tourner");
+    MOTOR_SetSpeed(0,tournerSpeed2);
+
+    if (encodeurGauche > tourDroit*degre/90 - 200){
+     if ( tournerSpeed2 > 0.1) tournerSpeed2 -= 0.01 ;
+    }
+    else if (tournerSpeed2 < .4) tournerSpeed2 += 0.01;
+    encodeurGauche = ENCODER_Read(0);
+    
+    //Serial.println(roueDroite);
+  }while(encodeurGauche < tourDroit*degre/90);
+  Serial.println(tourDroit*degre/90);
   MOTOR_SetSpeed(0,0);
   MOTOR_SetSpeed(1,0);
+  delay(100);
 }
 
 void TournerSurLui(float degre){
   ENCODER_Reset(0);
   ENCODER_Reset(1);
-  MOTOR_SetSpeed(0,-.2);
-  MOTOR_SetSpeed(1,.2);
+  tournerSpeed = .2;
+  MOTOR_SetSpeed(0,-1*tournerSpeed*.95);
+  MOTOR_SetSpeed(1,tournerSpeed);
   do{
     roueDroite = ENCODER_Read(1);
     roueGauche = ENCODER_Read(0);
-    if (roueGauche < -1*tourGauche*degre/90) MOTOR_SetSpeed(0,0);
-    if (roueDroite > tourDroit*degre/90) MOTOR_SetSpeed(1,0);
+    // if (roueDroite > tourDroit2 * degre/180 - 200){
+    //  if ( tournerSpeed > 0.1) tournerSpeed -= 0.01 ;
+    //   MOTOR_SetSpeed(0,-1*tournerSpeed*.95);
+    //   MOTOR_SetSpeed(1,tournerSpeed);
+    // }
+    if (roueGauche < -1*tourGauche2*degre/180) MOTOR_SetSpeed(0,0);
+    if (roueDroite > tourDroit2*degre/180) MOTOR_SetSpeed(1,0);
     //Serial.println(roueDroite);
-  }while(roueDroite < tourDroit * degre/90 || roueGauche <-1* tourGauche * degre/90);
-  Serial.println(test*degre/180);
+  }while(roueDroite < tourDroit2 * degre/180 || roueGauche >-1* tourGauche2 * degre/180);
+  //Serial.println(test*degre/180);
   MOTOR_SetSpeed(0,0);
   MOTOR_SetSpeed(1,0);
+  delay(100);
 }
 
 
