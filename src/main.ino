@@ -12,7 +12,10 @@ Inclure les librairies de functions que vous voulez utiliser
 
 #include <LibRobus.h> // Essentielle pour utiliser RobUS
 #include "avancer.h"
-#include "tourner.h"
+#include "tournersurlui.h"
+#include "tournergauche.h"
+#include "tournerdroite.h"
+#include "fonctions.h"
 
 /* ****************************************************************************
 Variables globales et defines
@@ -43,69 +46,97 @@ void setup(){
   ENCODER_Reset(0);
   ENCODER_Reset(1);
   Serial.begin(9600);
-  
-  //AvancerEnLigneDroiteInt(200);
+  int errTot= 0; // accumulated error
+
+  while(!ROBUS_IsBumper(3)){
+    
+  }
+
+  //AvancerEnLigneDroiteInt(100);
   //Calibration();
-  //TournerSurLui(180);
-  //TournerDroit(90);
+  
   //TournerGauche(90);
 
+  //AllerFuckingVite(200);
+
+  //RebalancerGauche(35);
+
   //A
-  AvancerEnLigneDroiteInt(200);  
+  Serial.println("A");
+  AvancerEnLigneDroiteInt(210);  
   //B
+  Serial.println("B");
   TournerGauche(90);
-  AvancerEnLigneDroiteInt(35); //40
+  AvancerEnLigneDroiteInt(35); 
   //C
+  Serial.println("C");
   TournerDroite(90);   
   AvancerEnLigneDroiteInt(20);
   //D
+  Serial.println("D");
   TournerDroite(90);
-  AvancerEnLigneDroiteInt(25); //30
+  AvancerEnLigneDroiteInt(25); 
   //E
+  Serial.println("E");
   TournerGauche(90);
-  AvancerEnLigneDroiteInt(8);
+  AvancerEnLigneDroiteInt(15);//8
   //F
+  Serial.println("F");
   TournerDroite(45);
   AvancerEnLigneDroiteInt(40);
   //G
+  Serial.println("G");
   TournerGauche(90);
-  AvancerEnLigneDroiteInt(55); //50
+  AvancerEnLigneDroiteInt(60); //50
   //H
-  TournerDroite(50);//45
-  AvancerEnLigneDroiteInt(100);//50
+  Serial.println("H");
+  TournerDroite(45);
+  AvancerEnLigneDroiteInt(110);
   //I
-  //TournerDroite(12.5);
+  Serial.println("I");
   //AvancerEnLigneDroiteInt(50);
   //J 
+  Serial.println("J");
   
   //FINIALLER
   //delay(20);
   TournerSurLui(180);
-  //delay(20);
 
-  AvancerEnLigneDroiteInt(107);//76
+  //TEST
+  // errTotDroite = 0;
+  // errTotGauche = 0;
+  delay(200);
+
+  AvancerEnLigneDroiteInt(110);//76
   // I
-  //TournerGauche(12.5);
+  Serial.println("I");
   //AvancerEnLigneDroiteInt(31);
   //H
-  TournerGauche(55);//50
+  Serial.println("H");
+  TournerGauche(45);//50
   AvancerEnLigneDroiteInt(50);
   //G
+  Serial.println("G");
   TournerDroite(90);
   AvancerEnLigneDroiteInt(37);
   //F
+  Serial.println("F");
   TournerGauche(45);
   AvancerEnLigneDroiteInt(12);
   //E
+  Serial.println("E");
   TournerDroite(90);
   AvancerEnLigneDroiteInt(25);
   //D
+  Serial.println("D");
   TournerGauche(90);
   AvancerEnLigneDroiteInt(20);
   //C
+  Serial.println("C");
   TournerGauche(90);
   AvancerEnLigneDroiteInt(25);
   //B
+  Serial.println("B");
   TournerDroite(90);
   //A
   AllerFuckingVite(200);
