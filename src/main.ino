@@ -11,12 +11,18 @@ Inclure les librairies de functions que vous voulez utiliser
 **************************************************************************** */
 
 #include <LibRobus.h> // Essentielle pour utiliser RobUS
+#include "avancer.h"
+#include "tournersurlui.h"
+#include "tournergauche.h"
+#include "tournerdroite.h"
+#include "fonctions.h"
 
 /* ****************************************************************************
 Variables globales et defines
 **************************************************************************** */
 // -> defines...
 // L'ensemble des fonctions y ont acces
+<<<<<<< HEAD
 int roueDroite;
 int roueGauche;
 float avancerSpeed;
@@ -27,6 +33,8 @@ float diff= 0.05;
 float ticParCM = 3200/(7.7*PI);
 float tour = 4000;
 int test = 4000;
+=======
+>>>>>>> testDroite
 
 
 /* ****************************************************************************
@@ -51,41 +59,126 @@ void setup(){
   ENCODER_Reset(0);
   ENCODER_Reset(1);
   Serial.begin(9600);
+<<<<<<< HEAD
   
 
   
   //CODE ALLER
   
+=======
+  int errTot= 0; // accumulated error
+
+  while(!ROBUS_IsBumper(3)){
+    
+  }
+
+  //AvancerEnLigneDroiteInt(100);
+  //Calibration();
+  
+  //TournerGauche(90);
+
+  //AllerFuckingVite(200);
+
+  //RebalancerGauche(35);
+
+>>>>>>> testDroite
   //A
-  AvancerEnLigneDroite(200); 
+  Serial.println("A");
+  AvancerEnLigneDroiteInt(210);  
   //B
+  Serial.println("B");
   TournerGauche(90);
-  AvancerEnLigneDroite(40);
+  AvancerEnLigneDroiteInt(35); 
   //C
+  Serial.println("C");
   TournerDroite(90);   
-  AvancerEnLigneDroite(30);
+  AvancerEnLigneDroiteInt(20);
   //D
+  Serial.println("D");
   TournerDroite(90);
-  AvancerEnLigneDroite(30);
+  AvancerEnLigneDroiteInt(25); 
   //E
+  Serial.println("E");
   TournerGauche(90);
-  AvancerEnLigneDroite(8);
+  AvancerEnLigneDroiteInt(15);//8
   //F
+<<<<<<< HEAD
   TournerDroite(35);
   AvancerEnLigneDroite(38);
-  //G
-  TournerGauche(90);
-  AvancerEnLigneDroite(55);
-  //H
+=======
+  Serial.println("F");
   TournerDroite(45);
-  AvancerEnLigneDroite(50);
+  AvancerEnLigneDroiteInt(40);
+>>>>>>> testDroite
+  //G
+  Serial.println("G");
+  TournerGauche(90);
+<<<<<<< HEAD
+  AvancerEnLigneDroite(55);
+=======
+  AvancerEnLigneDroiteInt(60); //50
+>>>>>>> testDroite
+  //H
+  Serial.println("H");
+  TournerDroite(45);
+  AvancerEnLigneDroiteInt(110);
   //I
+<<<<<<< HEAD
   TournerDroite(14);
   AvancerEnLigneDroite(50);
   //J
   TournerSurLui(1);
   // 
+=======
+  Serial.println("I");
+  //AvancerEnLigneDroiteInt(50);
+  //J 
+  Serial.println("J");
+>>>>>>> testDroite
   
+  //FINIALLER
+  //delay(20);
+  TournerSurLui(180);
+
+  //TEST
+  // errTotDroite = 0;
+  // errTotGauche = 0;
+  delay(200);
+
+  AvancerEnLigneDroiteInt(110);//76
+  // I
+  Serial.println("I");
+  //AvancerEnLigneDroiteInt(31);
+  //H
+  Serial.println("H");
+  TournerGauche(45);//50
+  AvancerEnLigneDroiteInt(50);
+  //G
+  Serial.println("G");
+  TournerDroite(90);
+  AvancerEnLigneDroiteInt(37);
+  //F
+  Serial.println("F");
+  TournerGauche(45);
+  AvancerEnLigneDroiteInt(12);
+  //E
+  Serial.println("E");
+  TournerDroite(90);
+  AvancerEnLigneDroiteInt(25);
+  //D
+  Serial.println("D");
+  TournerGauche(90);
+  AvancerEnLigneDroiteInt(20);
+  //C
+  Serial.println("C");
+  TournerGauche(90);
+  AvancerEnLigneDroiteInt(25);
+  //B
+  Serial.println("B");
+  TournerDroite(90);
+  //A
+  AllerFuckingVite(200);
+
 }
 
 
@@ -96,18 +189,10 @@ Fonctions de boucle infini (loop())
 
 void loop() {
   // SOFT_TIMER_Update(); // A decommenter pour utiliser des compteurs logiciels
-
-  //roueGauche = ENCODER_Read(0);
-  //Serial.print("Encodeur Gauche = ");
-  //Serial.println(roueGauche);
-
-  //roueDroite = ENCODER_Read(1);
-  //Serial.print("Encodeur Droite = " );
-  //Serial.println(roueDroite);
-
   delay(10);// Delais pour décharger le CPU
 }
 
+<<<<<<< HEAD
 void TournerGauche(float degre){
   ENCODER_Reset(0);
   ENCODER_Reset(1);
@@ -219,3 +304,5 @@ void TournerSurLui(float degre){
   MOTOR_SetSpeed(0,0);
   MOTOR_SetSpeed(1,0);
 }
+=======
+>>>>>>> testDroite
