@@ -16,6 +16,10 @@ Inclure les librairies de functions que vous voulez utiliser
 #include "tournergauche.h"
 #include "tournerdroite.h"
 #include "fonctions.h"
+#include "run.h"
+#include "run2.h"
+#include "run3.h"
+
 
 /* ****************************************************************************
 Variables globales et defines
@@ -52,94 +56,169 @@ void setup(){
     
   }
 
-  //AvancerEnLigneDroiteInt(100);
-  //Calibration();
+
+  //Avancer2(4000);
+
+  // //calibrer les tournants
+  // for(int i = 0; i < 4; i++)
+  // {
+  //   //RebalancerDroite(tourGauche);
+  //   //RebalancerGauche(tourDroit);
+  //   //TournerDroite(-44.4); //-44.4
+  //   //TournerGauche(44.8); //44.8
+  //   //TournerSurLui(180);
+  //   // TournerDroite(12.5);
+  //   // delay(500);
+  //   // TournerDroite(-12.3);
+  //   // delay(500);
+  // }
+
+  //TesterTournants2();
+
+  // AvancerEnLigneDroite(200);
+  // AvancerEnLigneDroite(-200);
+  //TournerSurLui(180);
+  // TournerGauche(90);//180 homemade
+  // TournerGauche(90);//180 homemade
+  // TournerGauche(90);//180 homemade
+  // TournerDroite(90);
+  //AvancerEnLigneDroite(180);
+
+  //AvancerEnPingouin(400);
   
-  //TournerGauche(90);
 
-  //AllerFuckingVite(200);
-
+  //Calibration();
+  //TournerGauche(-90);
+  //TournerDroite(-90);
+  //AllerFuckingVite(-200);
   //RebalancerGauche(35);
 
-  //A
-  Serial.println("A");
-  AvancerEnLigneDroiteInt(210);  
-  //B
-  Serial.println("B");
+  //TesterTournants3();
+  Run3();
+  //RebalancerGauche(-100);
+  //RebalancerDroite(-6);
+}
+
+void TesterTournants(){
+  //Tous les tournants du parcours sans les lignes droites
   TournerGauche(90);
-  AvancerEnLigneDroiteInt(35); 
-  //C
-  Serial.println("C");
-  TournerDroite(90);   
-  AvancerEnLigneDroiteInt(20);
-  //D
-  Serial.println("D");
+  delay(500);
+  TournerDroite(90); 
+  delay(500);
   TournerDroite(90);
-  AvancerEnLigneDroiteInt(25); 
+  delay(500);
+  TournerGauche(90);
+  delay(500);
+  TournerDroite(45);
+  delay(500);
+  TournerGauche(90);
+  delay(500);
+  TournerDroite(45);
+  delay(500);
+  TournerGauche(270);//180 homemade
+  delay(500); 
+  TournerDroite(90); // =180 homemade
+  delay(500);
+  TournerGauche(45);//50
+  delay(500);
+  TournerDroite(90);
+  delay(500);
+  TournerGauche(45);
+  delay(500);
+  TournerDroite(90);
+  delay(500);
+  TournerGauche(90);
+  delay(500);
+  TournerGauche(90);
+  delay(500);
+  TournerDroite(90);
+  delay(500);
+}
+
+void TesterTournants2(){
+  TournerGauche(90);
+  delay(500);
+  TournerGauche(90);
+  delay(500);
+  TournerGauche(90);
+  delay(500);
+  TournerGauche(90);
+  delay(500);
+
+  TournerDroite(90);
+  delay(500);
+  TournerDroite(90);
+  delay(500);
+  TournerDroite(90);
+  delay(500);
+  TournerDroite(90);
+  delay(500);
+
+  TournerGauche(-90);
+  delay(500);
+  TournerGauche(-90);
+  delay(500);
+  TournerGauche(-90);
+  delay(500);
+  TournerGauche(-90);
+  delay(500);
+
+  TournerDroite(-90);
+  delay(500);
+  TournerDroite(-90);
+  delay(500);
+  TournerDroite(-90);
+  delay(500);
+  TournerDroite(-90);
+  delay(500);
+  
+}
+
+void TesterTournants3(){
+  //DÉBUT PARCOURS
+  //A
+  //B
+  TournerGauche(90);
+  //C
+  TournerDroite(90);   
+  //D
+  TournerDroite(90);
   //E
-  Serial.println("E");
   TournerGauche(90);
-  AvancerEnLigneDroiteInt(15);//8
   //F
-  Serial.println("F");
   TournerDroite(45);
-  AvancerEnLigneDroiteInt(40);
   //G
-  Serial.println("G");
   TournerGauche(90);
-  AvancerEnLigneDroiteInt(60); //50
   //H
-  Serial.println("H");
-  TournerDroite(45);
-  AvancerEnLigneDroiteInt(110);
+  TournerDroite(44.4);//55
+
   //I
-  Serial.println("I");
-  //AvancerEnLigneDroiteInt(50);
+  //TournerDroite(12.5);
+
   //J 
-  Serial.println("J");
   
   //FINIALLER
-  //delay(20);
-  TournerSurLui(180);
+  delay(100);
+  // TournerGauche(270);//180 homemade
+  // TournerDroite(90);
 
-  //TEST
-  // errTotDroite = 0;
-  // errTotGauche = 0;
-  delay(200);
-
-  AvancerEnLigneDroiteInt(110);//76
-  // I
-  Serial.println("I");
-  //AvancerEnLigneDroiteInt(31);
+  //I
+  //TournerDroite(-12.5);
   //H
-  Serial.println("H");
-  TournerGauche(45);//50
-  AvancerEnLigneDroiteInt(50);
+  TournerDroite(-45);//55
   //G
-  Serial.println("G");
-  TournerDroite(90);
-  AvancerEnLigneDroiteInt(37);
+  TournerGauche(-90);
   //F
-  Serial.println("F");
-  TournerGauche(45);
-  AvancerEnLigneDroiteInt(12);
+  TournerDroite(-45);
   //E
-  Serial.println("E");
-  TournerDroite(90);
-  AvancerEnLigneDroiteInt(25);
+  TournerGauche(-90);
   //D
-  Serial.println("D");
-  TournerGauche(90);
-  AvancerEnLigneDroiteInt(20);
+  TournerDroite(-90);
   //C
-  Serial.println("C");
-  TournerGauche(90);
-  AvancerEnLigneDroiteInt(25);
+  TournerDroite(-90);
   //B
-  Serial.println("B");
-  TournerDroite(90);
+  TournerGauche(-90);
   //A
-  AllerFuckingVite(200);
 
 }
 

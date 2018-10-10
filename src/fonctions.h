@@ -2,6 +2,7 @@
 #define FONCTIONS_H
 #include <LibRobus.h> // Essentielle pour utiliser RobUS
 #include "avancer.h"
+#include "global.h"
 
 void Calibration(){
     MOTOR_SetSpeed(0,0.095);
@@ -26,7 +27,9 @@ void Calibration(){
 }
 
 void AllerFuckingVite(int cm){
-  int distance = cm*ticParCM;
+  int sens = 1;
+  if(cm<0) sens = -1;
+  int32_t distance = abs(cm*ticParCM);
   float erreur;
   float sum=0;
   float erreurRatio = 500;
@@ -34,51 +37,34 @@ void AllerFuckingVite(int cm){
   ENCODER_Reset(0);
   ENCODER_Reset(1);
   avancerSpeed = 0.1;
-  MOTOR_SetSpeed(0,0.095*avancerSpeed);
-  MOTOR_SetSpeed(1,avancerSpeed);
+  MOTOR_SetSpeed(0,sens *0.095*avancerSpeed);
+  MOTOR_SetSpeed(1,sens *avancerSpeed);
   do
   {
-    roueGauche = ENCODER_Read(0);
-    roueDroite = ENCODER_Read(1);
+    roueGauche = sens * ENCODER_Read(0);
+    roueDroite = sens * ENCODER_Read(1);
     erreur = roueGauche - roueDroite;
     sum += erreur;
   
     if (avancerSpeed < 1) avancerSpeed += 0.1;//.02
-    MOTOR_SetSpeed(0, avancerSpeed*(1-erreur/erreurRatio -sum/sumRatio));
-    MOTOR_SetSpeed(1, avancerSpeed*(1+erreur/erreurRatio + sum/sumRatio));
+    MOTOR_SetSpeed(0, sens * avancerSpeed*(1-erreur/erreurRatio -sum/sumRatio));
+    MOTOR_SetSpeed(1, sens * avancerSpeed*(1+erreur/erreurRatio + sum/sumRatio));
     delay(100);
     if (roueGauche > distance) MOTOR_SetSpeed(0,0);
     if (roueDroite > distance) MOTOR_SetSpeed(1,0);
 
   } while (roueGauche < distance || roueDroite < distance);
-  delay(20);
-  MOTOR_SetSpeed(0,-.4);
-  MOTOR_SetSpeed(1,-.4);
-  delay(500);
-  MOTOR_SetSpeed(0,.6);
-  MOTOR_SetSpeed(1,.6);
-  delay(500);
-  MOTOR_SetSpeed(0,0);
-  MOTOR_SetSpeed(1,0);
+  // delay(20);
+  // MOTOR_SetSpeed(0,-.4);
+  // MOTOR_SetSpeed(1,-.4);
+  // delay(500);
+  // MOTOR_SetSpeed(0,.6);
+  // MOTOR_SetSpeed(1,.6);
+  // delay(500);
+  // MOTOR_SetSpeed(0,0);
+  // MOTOR_SetSpeed(1,0);
 }
 
-void RebalancerGauche(int distance){
-  do
-  {
-    roueGauche = ENCODER_Read(0);
-    roueDroite = ENCODER_Read(1);
-  
-    MOTOR_SetSpeed(0, .1);
-    MOTOR_SetSpeed(1, 0);
-
-  } while (roueGauche < distance);
-
-  Serial.print("roueGauche = ");
-    Serial.print(roueGauche);
-
-  MOTOR_SetSpeed(0, 0);
-  MOTOR_SetSpeed(1, 0);
-}
 
 
 #endif
