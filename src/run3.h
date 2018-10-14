@@ -28,7 +28,7 @@ void Run3(){
   //E
   Serial.println("E");
   TournerGauche(90);
-  AvancerEnLigneDroite(24);
+  AvancerEnLigneDroite(27); //24
   //F
   Serial.println("F");
   TournerDroite(44.8);
@@ -36,7 +36,7 @@ void Run3(){
   //G
   Serial.println("G");
   TournerGauche(90);
-  AvancerEnLigneDroite(60); //50
+  AvancerEnLigneDroite(70); //60
   //H
   Serial.println("H");
   TournerDroite(44.8);//55
@@ -44,8 +44,8 @@ void Run3(){
 
   //I
   Serial.println("I");
-  TournerDroite(12.5);
-  AvancerEnLigneDroite(80);
+  TournerDroite(10); //12.5
+  AvancerEnLigneDroite(90);
 
   //J 
   Serial.println("J");
@@ -54,17 +54,17 @@ void Run3(){
   delay(100);
   // TournerGauche(270);//180 homemade
   // TournerDroite(90);
-  AvancerEnLigneDroite(-80);
+  AvancerEnLigneDroite(-90);
 
   //I
   Serial.println("I");
-  TournerDroite(-12.3);
+  TournerDroite(-9.5);//12.3
   AvancerEnLigneDroite(-32);//-32
 
   //H
   Serial.println("H");
   TournerDroite(-44.4);
-  AvancerEnLigneDroite(-60); //-50
+  AvancerEnLigneDroite(-70); //-60
   //G
   Serial.println("G");
   TournerGauche(-90);
@@ -72,19 +72,19 @@ void Run3(){
   //F
   Serial.println("F");
   TournerDroite(-44.4);
-  AvancerEnLigneDroite(-20); //-24
+  AllerFuckingVite(-23); //-20
   //E
   Serial.println("E");
   TournerGauche(-90);
-  AvancerEnLigneDroite(-32);//-28
+  AllerFuckingVite(-28);//-28
   //D
   Serial.println("D");
   TournerDroite(-90);
-  AvancerEnLigneDroite(-24);
+  AllerFuckingVite(-24);
   //C
   Serial.println("C");
   TournerDroite(-90);
-  AvancerEnLigneDroite(-36); //-28
+  AllerFuckingVite(-36); //-28
   //B
   Serial.println("B");
   TournerGauche(-90);

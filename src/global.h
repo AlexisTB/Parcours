@@ -15,9 +15,9 @@ float tour = 3930;//3945 //3939 //3925
 float tourInverse = 3915;
 
 float tourDroit = 3935; //3940
-float tourGauche = 3950; //3930 
-float tourDroitInverse = 3920; //3915
-float tourGaucheInverse = 3944; //3945
+float tourGauche = 3955; //3930 
+float tourDroitInverse = 3925; //3915 //3930
+float tourGaucheInverse = 3949; //3945
 
 int test = 3951;//3951 //3960 
 float tourDroit2 = 3900;

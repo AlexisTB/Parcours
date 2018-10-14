@@ -39,7 +39,7 @@ void TournerDroite(float degre){
   
   MOTOR_SetSpeed(0,0);
   MOTOR_SetSpeed(1,0);
-  delay(100);
+  delay(100); //100
 
   Serial.print("FINI tourner droite, speed finale = ");
   Serial.println(speed);

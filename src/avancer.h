@@ -104,8 +104,8 @@ void AvancerEnLigneDroite(float cm){
     erreur = roueGauche - roueDroite;
 
     //accélération / décelération
-    if (roueDroite > distanceGauche - 1000){
-     if ( avancerSpeed > 0.11) avancerSpeed -= 0.05 ;
+    if (roueDroite > distanceGauche - 1500){ //1500
+     if ( avancerSpeed > 0.11) avancerSpeed -= 0.02;
      else avancerSpeed = 0.1;
     }
     else if (avancerSpeed < .6) avancerSpeed += 0.005;
@@ -154,86 +154,75 @@ void AvancerEnLigneDroite(float cm){
   Serial.println(errTotDroite);
   MOTOR_SetSpeed(0,0);
   MOTOR_SetSpeed(1,0);
-  delay(100);
+  delay(10); //100
 }
 
-void Avancer2(int32_t goal){
+void AvancerEnLigneDroite2(float cm){
+  int sens = 1;
+  float cheat = 1;//0.9438;
+  if(cm<0) sens = -1;
+  int32_t distance = abs(cm*ticParCM);
+  int32_t distanceGauche = distance; //- errTotGauche;
+  int32_t distanceDroite = distance; //- errTotDroite;
+
+  int erreur;
   ENCODER_Reset(0);
   ENCODER_Reset(1);
-
-  int32_t distanceGauche = 0;
-  int32_t distanceDroite = 0;
-
-  avancerSpeed = .3;
-
-  float ratio = -0.1;
-  float initSpeed = 0.1462;
-  // float speedGauche = initSpeed * (1-ratio);
-  // float speedDroite = initSpeed * (1+ratio);
-
-  float erreur;
-  float sum = 0;
-  float erreurRatio = 10000;
-  float speedGauche;
-  float speedDroite;
-
-  int deltaT = 100;
+  avancerSpeed = 0.05; // 0.05
   do
   {
-
-    roueGauche = ENCODER_ReadReset(0);
-    distanceGauche += roueGauche; 
-    roueDroite = ENCODER_ReadReset(1)*rightBias;
-    distanceDroite += roueDroite;
-
+    roueGauche = sens * ENCODER_Read(0);
+    roueDroite = sens * ENCODER_Read(1)*rightBias;
     erreur = roueGauche - roueDroite;
-    sum += erreur;
 
+    //accélération / décelération
+   if (avancerSpeed < .8) avancerSpeed += 0.01;
+    
+    
+    // if (erreur < 10) diff = 0.05;
+    // else if (erreur < 100) diff = 0.25;
+    // else diff = .5;
+    
 
-    //accélération
-    // if (distanceGauche > goal - 1000)
-    // {
-    //  if ( avancerSpeed > 0.11) avancerSpeed -= 0.05 ;
-    //  else avancerSpeed = 0.1;
-    // }
-    // else if (avancerSpeed < .6) avancerSpeed += 0.005;
+    if (erreur<0) {
+      MOTOR_SetSpeed(0, sens *cheat* avancerSpeed*(1+diff));
+      MOTOR_SetSpeed(1, sens * avancerSpeed*(1-diff));
+    } 
+    else if (erreur>0)
+    {
+      MOTOR_SetSpeed(0, sens * cheat * avancerSpeed*(1-diff));
+      MOTOR_SetSpeed(1, sens * avancerSpeed*(1+diff));
+    } 
+    else
+    {
+      MOTOR_SetSpeed(0, sens * cheat *avancerSpeed*1);
+      MOTOR_SetSpeed(1, sens * avancerSpeed*1);
+    }
+    
+    delay(10);
+    if (roueGauche > distanceGauche) MOTOR_SetSpeed(0,0);
+    if (roueDroite > distanceDroite) MOTOR_SetSpeed(1,0);
+    // Serial.print("erreur = ");
+    // Serial.println(erreur);
+  } while (roueGauche < distanceGauche );//|| roueDroite < distanceDroite);
+  // errTotGauche = roueGauche - distanceGauche;
+  // errTotDroite = roueDroite - distanceDroite;
+  // Serial.print("FINI avancer, speed finale = ");
+  // Serial.println(avancerSpeed);
+  // Serial.print("REBALANCAGE: g= ");
+  // Serial.print(errTotGauche);
+  // Serial.print(" | d= ");
+  // Serial.println(errTotDroite);
+  // errTotDroite += RebalancerDroite(-1*errTotDroite);
+  // errTotGauche += RebalancerGauche(-1*errTotGauche);
 
-    ratio += erreur/erreurRatio;
-
-    //recalibration
-    speedGauche = avancerSpeed * (1+ratio);
-    speedDroite = avancerSpeed * (1-ratio);
-    //cap
-    if (speedGauche < .1) speedGauche = .1;
-    if (speedGauche > .9) speedGauche = .9;
-    if (speedDroite < .1) speedDroite = .1;
-    if (speedDroite > .9) speedDroite = .9;
-
-    MOTOR_SetSpeed(0,speedGauche);
-    MOTOR_SetSpeed(1,speedDroite); 
-
-    //affichage
-    // Serial.print("roueGauche = ");
-    // Serial.print(roueGauche);
-    // Serial.print("  |  roueDroite = ");
-    // Serial.println(roueDroite);
-    Serial.print("erreur = ");
-    Serial.print(erreur);
-    Serial.print("  ||  sum = ");
-    Serial.print(sum);    
-    Serial.print("  ||  speedGauche = ");
-    Serial.print(10000*speedGauche);  
-    Serial.print("  ||  speedDroite = ");
-    Serial.print(10000*speedDroite); 
-    Serial.print("  ||  ratio = ");
-    Serial.println(100 * ratio); 
-    delay(deltaT);   
-  } while (distanceGauche < goal);
-  
+  // Serial.print("ERREUR TOT = gauche:");
+  // Serial.print(errTotGauche);
+  // Serial.print(" droite:");
+  // Serial.println(errTotDroite);
   MOTOR_SetSpeed(0,0);
   MOTOR_SetSpeed(1,0);
-
-
+  delay(10); //100
 }
 
 

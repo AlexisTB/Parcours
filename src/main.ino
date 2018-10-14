@@ -60,17 +60,18 @@ void setup(){
   //Avancer2(4000);
 
   // //calibrer les tournants
-  // for(int i = 0; i < 4; i++)
+  // for(int i = 0; i < 8; i++)
   // {
   //   //RebalancerDroite(tourGauche);
   //   //RebalancerGauche(tourDroit);
-  //   //TournerDroite(-44.4); //-44.4
-  //   //TournerGauche(44.8); //44.8
+  //   TournerDroite(10); //-44.4
+    
+  //   TournerDroite(-9.5); //44.8
   //   //TournerSurLui(180);
   //   // TournerDroite(12.5);
   //   // delay(500);
   //   // TournerDroite(-12.3);
-  //   // delay(500);
+  //   delay(500);
   // }
 
   //TesterTournants2();
@@ -190,10 +191,10 @@ void TesterTournants3(){
   //G
   TournerGauche(90);
   //H
-  TournerDroite(44.4);//55
+  TournerDroite(44.9);//55
 
   //I
-  //TournerDroite(12.5);
+  TournerDroite(12.5);
 
   //J 
   
@@ -203,9 +204,9 @@ void TesterTournants3(){
   // TournerDroite(90);
 
   //I
-  //TournerDroite(-12.5);
+  TournerDroite(-12.3);
   //H
-  TournerDroite(-45);//55
+  TournerDroite(-44.4);//55
   //G
   TournerGauche(-90);
   //F

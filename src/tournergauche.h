@@ -38,7 +38,7 @@ void TournerGauche(float degre){
   
   MOTOR_SetSpeed(0,0);
   MOTOR_SetSpeed(1,0);
-  delay(100);
+  delay(100); //100
 
   Serial.println("FINI tourner gauche");
   Serial.print("Gauche = ");
