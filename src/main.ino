@@ -20,19 +20,23 @@ Inclure les librairies de functions que vous voulez utiliser
 #include "run2.h"
 #include "run3.h"
 
-
+int16_t outputIR;
+float voltage;
+float distance;
+float freq1;
+float freq2;
+int tempsGlobal = 0;
+int duree = 0;
 /* ****************************************************************************
 Variables globales et defines
 **************************************************************************** */
 // -> defines...
 // L'ensemble des fonctions y ont acces
+void FonctionTestTempsGlobal(){
+  Serial.print("temps = ");
+  Serial.println(tempsGlobal);
+  tempsGlobal++;
 
-
-/* ****************************************************************************
-Vos propres fonctions sont creees ici
-**************************************************************************** */
-void maFonction(){
-  // code
 }
 
 
@@ -50,12 +54,32 @@ void setup(){
   ENCODER_Reset(0);
   ENCODER_Reset(1);
   Serial.begin(9600);
-  int errTot= 0; // accumulated error
 
-  while(!ROBUS_IsBumper(3)){
+  //SOFT timage
+
+  // SOFT_TIMER_SetCallback(0,&FonctionTestTempsGlobal);
+  // SOFT_TIMER_SetDelay(0,1000);
+  // SOFT_TIMER_SetRepetition(0,-1);
+  // SOFT_TIMER_Enable(0);
+
+  //SERVO_Enable(0);
+
+  // while(!ROBUS_IsBumper(3)){
     
-  }
+  // }
 
+  //AvancerEnLigneDroite(30);
+
+  /*SERVOMOTEUR
+  // for(int i = 0; i < 5; i++)
+  // {
+  //   delay(1000);
+  //   SERVO_SetAngle(0, 180);
+  //   delay(1000);
+  //   SERVO_SetAngle(0, 0);
+  // }
+  // SERVO_Disable(0);
+  */
 
   //Avancer2(4000);
 
@@ -95,133 +119,13 @@ void setup(){
   //RebalancerGauche(35);
 
   //TesterTournants3();
-  Run3();
+  //Run3();
   //RebalancerGauche(-100);
   //RebalancerDroite(-6);
 }
 
-void TesterTournants(){
-  //Tous les tournants du parcours sans les lignes droites
-  TournerGauche(90);
-  delay(500);
-  TournerDroite(90); 
-  delay(500);
-  TournerDroite(90);
-  delay(500);
-  TournerGauche(90);
-  delay(500);
-  TournerDroite(45);
-  delay(500);
-  TournerGauche(90);
-  delay(500);
-  TournerDroite(45);
-  delay(500);
-  TournerGauche(270);//180 homemade
-  delay(500); 
-  TournerDroite(90); // =180 homemade
-  delay(500);
-  TournerGauche(45);//50
-  delay(500);
-  TournerDroite(90);
-  delay(500);
-  TournerGauche(45);
-  delay(500);
-  TournerDroite(90);
-  delay(500);
-  TournerGauche(90);
-  delay(500);
-  TournerGauche(90);
-  delay(500);
-  TournerDroite(90);
-  delay(500);
-}
 
-void TesterTournants2(){
-  TournerGauche(90);
-  delay(500);
-  TournerGauche(90);
-  delay(500);
-  TournerGauche(90);
-  delay(500);
-  TournerGauche(90);
-  delay(500);
 
-  TournerDroite(90);
-  delay(500);
-  TournerDroite(90);
-  delay(500);
-  TournerDroite(90);
-  delay(500);
-  TournerDroite(90);
-  delay(500);
-
-  TournerGauche(-90);
-  delay(500);
-  TournerGauche(-90);
-  delay(500);
-  TournerGauche(-90);
-  delay(500);
-  TournerGauche(-90);
-  delay(500);
-
-  TournerDroite(-90);
-  delay(500);
-  TournerDroite(-90);
-  delay(500);
-  TournerDroite(-90);
-  delay(500);
-  TournerDroite(-90);
-  delay(500);
-  
-}
-
-void TesterTournants3(){
-  //DÉBUT PARCOURS
-  //A
-  //B
-  TournerGauche(90);
-  //C
-  TournerDroite(90);   
-  //D
-  TournerDroite(90);
-  //E
-  TournerGauche(90);
-  //F
-  TournerDroite(45);
-  //G
-  TournerGauche(90);
-  //H
-  TournerDroite(44.9);//55
-
-  //I
-  TournerDroite(12.5);
-
-  //J 
-  
-  //FINIALLER
-  delay(100);
-  // TournerGauche(270);//180 homemade
-  // TournerDroite(90);
-
-  //I
-  TournerDroite(-12.3);
-  //H
-  TournerDroite(-44.4);//55
-  //G
-  TournerGauche(-90);
-  //F
-  TournerDroite(-45);
-  //E
-  TournerGauche(-90);
-  //D
-  TournerDroite(-90);
-  //C
-  TournerDroite(-90);
-  //B
-  TournerGauche(-90);
-  //A
-
-}
 
 
 /* ****************************************************************************
@@ -230,7 +134,54 @@ Fonctions de boucle infini (loop())
 // -> Se fait appeler perpetuellement suite au "setup"
 
 void loop() {
-  // SOFT_TIMER_Update(); // A decommenter pour utiliser des compteurs logiciels
+  //SOFT_TIMER_Update(); // A decommenter pour utiliser des compteurs logiciels
+  //outputIR = ROBUS_ReadIR(0);
+  //voltage = outputIR/790;
+  
+  
+  //DÉTECTEUR DE SIFFLET
+  freq1 = analogRead(8);
+  Serial.print("bruit ambiant= ");
+  Serial.print(freq1);
+  freq2 = analogRead(9);
+  Serial.print("  |  5Hz= ");
+  Serial.println(freq2);
+  //MOTOR_SetSpeed(0,.1);
+  //MOTOR_SetSpeed(1,.1);
+
+  if (freq2 > 400) {
+    //Serial.println("CRISS ARRÊTE");
+    duree++;
+    MOTOR_SetSpeed(0,0);
+    MOTOR_SetSpeed(1,0);
+    if (duree == 50) {
+      MOTOR_SetSpeed(0,0);
+      MOTOR_SetSpeed(1,0);
+      delay(10000);
+    }
+  } else {
+    duree = 0;
+    //Serial.println("c'est chill lgros");
+  }
+
+
+  // // DÉTECTEUR DE LIGNE
+  // Serial.print("3= ");
+  // Serial.print(analogRead(3));
+  // Serial.print(" | 2= ");
+  // Serial.print(analogRead(2));
+  // Serial.print(" | 1= ");
+  // Serial.print(analogRead(1));
+  // Serial.print(" | 0= ");
+  // Serial.println(analogRead(0));  
+  
+  
+
+    
+  //Serial.println(freq2);
+  //Serial.print("outputIR = ");
+  //Serial.println(9325.1 * pow(outputIR,-1.263));
   delay(10);// Delais pour décharger le CPU
+
 }
 

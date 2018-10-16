@@ -65,6 +65,54 @@ void AllerFuckingVite(int cm){
   // MOTOR_SetSpeed(1,0);
 }
 
+void TesterTournants3(){
+  //DÉBUT PARCOURS
+  //A
+  //B
+  TournerGauche(90);
+  //C
+  TournerDroite(90);   
+  //D
+  TournerDroite(90);
+  //E
+  TournerGauche(90);
+  //F
+  TournerDroite(45);
+  //G
+  TournerGauche(90);
+  //H
+  TournerDroite(44.9);//55
+
+  //I
+  TournerDroite(12.5);
+
+  //J 
+  
+  //FINIALLER
+  delay(100);
+  // TournerGauche(270);//180 homemade
+  // TournerDroite(90);
+
+  //I
+  TournerDroite(-12.3);
+  //H
+  TournerDroite(-44.4);//55
+  //G
+  TournerGauche(-90);
+  //F
+  TournerDroite(-45);
+  //E
+  TournerGauche(-90);
+  //D
+  TournerDroite(-90);
+  //C
+  TournerDroite(-90);
+  //B
+  TournerGauche(-90);
+  //A
+
+}
+
 
 
 #endif
