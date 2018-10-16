@@ -8,7 +8,7 @@
 
 void SuivreLigne(){
     int capteurs[8];
-    int flipFlop = 0;
+    int flipFlop = 2;
 
     for(int i = 0; i < sizeof(capteurs) - 1; i++)
     {
@@ -43,27 +43,34 @@ void SuivreLigne(){
     // if (flipFlop == 2 && capteurs[1] == 0) flipFlop = 1; 
     // if (flipFlop == 1 && capteurs[1] == 0) flipFlop = 1; 
 
-    if (flipFlop == 1) {
-        MOTOR_SetSpeed(0,-.10);
-        MOTOR_SetSpeed(1,-.05); 
-        if (capteurs[1] < BLANC) {
-            flipFlop = 0;
+    if (flipFlop == 2) {
+ 
+        if (capteurs[1] > NOIR) {
+            flipFlop = 1;
+            Serial.println("flipFlop = 1");
         }
     } 
-    else //flipFlop == 0
+    if (flipFlop == 1 && capteurs[1] < BLANC) {
+        flipFlop = -2; 
+        Serial.println("flipFlop = -2");
+    }
+    if (flipFlop == -2)
     {
         MOTOR_SetSpeed(0,-.05);
         MOTOR_SetSpeed(1,-.1); 
-         if (capteurs[1] > NOIR) {
-            flipFlop = 1;
+        if (capteurs[1] > NOIR) {
+           flipFlop = -1;
+           Serial.println("flipFlop = -1");
         }
     }
-    
-    
-    
-   
-    
-    
+    if (flipFlop == -1 && capteurs[1] < BLANC) {
+        flipFlop = 2;
+        Serial.println("flipFlop = -2");
+        MOTOR_SetSpeed(0,-.10);
+        MOTOR_SetSpeed(1,-.05);
+    }
+
+
 }
 
 #endif
