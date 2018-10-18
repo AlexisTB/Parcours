@@ -31,11 +31,11 @@ void SuivreLigneAlexis(){
        //tourner Gauche
         MOTOR_SetSpeed(0,-.05);
         MOTOR_SetSpeed(1,-.10); 
-    } else if (capteurs[3] > NOIR ){
+    } else if (capteurs[0] > NOIR ){
        //tourner Droite
         MOTOR_SetSpeed(0,-.10);
         MOTOR_SetSpeed(1,-.05);    
-    } else if (capteurs[4] > NOIR ){
+    } else if (capteurs[3] > NOIR ){
        //tourner Gauche
         MOTOR_SetSpeed(0,-.05);
         MOTOR_SetSpeed(1,-.10); 

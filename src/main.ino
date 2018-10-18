@@ -23,13 +23,14 @@ Inclure les librairies de functions que vous voulez utiliser
 #include "suivrelignealexis.h"
 
 
-int16_t outputIR;
 float voltage;
 float distance;
 float freq1;
 float freq2;
 int tempsGlobal = 0;
 int duree = 0;
+int distanceirhaut;
+int distanceirbas;
 /* ****************************************************************************
 Variables globales et defines
 **************************************************************************** */
@@ -66,6 +67,7 @@ void setup(){
   // SOFT_TIMER_Enable(0);
 
   // SERVO_Enable(0);
+  
 
   while(!ROBUS_IsBumper(3)){
     
@@ -169,21 +171,79 @@ void loop() {
 
 
   // // DÉTECTEUR DE LIGNE
-  Serial.print("3= ");
-  Serial.print(analogRead(3));
-  Serial.print(" | 2= ");
-  Serial.print(analogRead(2));
-  Serial.print(" | 1= ");
-  Serial.print(analogRead(1));
-  Serial.print(" | 0= ");
-  Serial.println(analogRead(0));  
+  // Serial.print("3= ");
+  // Serial.print(analogRead(3));
+  // Serial.print(" | 2= ");
+  // Serial.print(analogRead(2));
+  // Serial.print(" | 1= ");
+  // Serial.print(analogRead(1));
+  // Serial.print(" | 0= ");
+  // Serial.println(analogRead(0));  
   
   //SuivreLigne();
-  SuivreLigneAlexis();
-    
+ // SuivreLigneAlexis();
+        // MOTOR_SetSpeed(0,.4);
+        // MOTOR_SetSpeed(1,.4);
   //Serial.println(freq2);
   //Serial.print("outputIR = ");
-  //Serial.println(9325.1 * pow(outputIR,-1.263));
+
+
+
+
+  // Code du goaler
+  // Avanceren ligne droite et revenir de 2 cm.
+  // MOTOR_SetSpeed(0,.1);
+  // MOTOR_SetSpeed(1,.1);
+  // delay(500);
+  // MOTOR_SetSpeed(0,-.1);
+  // MOTOR_SetSpeed(1,-.1);
+  // delay(500);
+
+  RebalancerDroite(200);
+  MOTOR_SetSpeed (0,.2);
+  RebalancerDroite(-200);
+  MOTOR_SetSpeed (0,-.2);
+
+// //code DÉTECTEUR
+// uint16_t ROBUS_ReadIR(uint8_t 0);
+// uint16_t ROBUS_ReadIR(uint8_t 3);
+
+
+
+// distanceirhaut = 0;
+// distanceirhaut = 0;
+
+// for(int i = 0; i < 4; i++)
+// {
+//   /* code */
+
+//   distanceirhaut += (int)(9325.1 * pow(ROBUS_ReadIR(3),-1.263));
+//   distanceirbas += (int)(9325.1 * pow(ROBUS_ReadIR(0),-1.263));
+//   delay(10);
+// }
+
+// distanceirhaut = distanceirhaut/4;
+// distanceirbas = distanceirbas/4;
+
+// Serial.print("distanceirhaut : ");
+// Serial.print(distanceirhaut);
+
+// Serial.print("  ||  distanceirbas : ");
+// Serial.println(distanceirbas);
+
+
+
+// if (!ROBUS_IsBumper(2)) {
+  /* code */
+
+    //mode trouver et avancer sur la balle
+    // if (distanceirhaut > distanceirbas + 6  && distanceirbas < 15 && distanceirbas > 5 && distanceirbas > 5) {
+    //  // Avancervite et ralentir vers la balle.
+    //   MOTOR_SetSpeed(0,.2);
+    //   MOTOR_SetSpeed(1,.2);
+    // }
+
+//}
   delay(10);// Delais pour décharger le CPU
 
 }
