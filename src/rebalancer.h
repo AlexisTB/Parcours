@@ -37,7 +37,7 @@ int RebalancerDroite(int distance){
     roueGauche = ENCODER_Read(0);
     roueDroite = ENCODER_Read(1);
   
-    MOTOR_SetSpeed(0, 0);
+    MOTOR_SetSpeed(0, sens*.1);
     MOTOR_SetSpeed(1, sens*.1);
 
   } while (roueDroite * sens < sens * distance);
