@@ -3,9 +3,16 @@
 #include <LibRobus.h> // Essentielle pour utiliser RobUS
 #include "rebalancer.h"
 #include "global.h"
+#include "tournersurlui.h"
 
-
-
+void Depogner(){
+  MOTOR_SetSpeed(0, -.2);
+  MOTOR_SetSpeed(1, -.2);
+  delay(1000);
+  TournerSurLui(130);
+  ENCODER_Reset(0);
+  ENCODER_Reset(1);
+}
 
 void AvancerEnLigneDroiteInt(float cm){
   int distance = cm*ticParCM;
@@ -14,7 +21,7 @@ void AvancerEnLigneDroiteInt(float cm){
 
   float erreur;
   float sum=0;
-  float erreurRatio = 10000;
+  //float erreurRatio = 10000;
   float sumRatio = 10000000000;
   ENCODER_Reset(0);
   ENCODER_Reset(1);
