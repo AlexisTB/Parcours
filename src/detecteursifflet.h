@@ -4,15 +4,15 @@
 
 #define PIN_SIFFLET 0
 #define PIN_AMBIANT 1
-#define MAX_AMP 500
+#define MAX_AMP 510 //550
 float ampAmbiant;
 float amp5khz;
 int duree = 0;
 
 
-void DetecteurSifflet(){
+int DetecteurSifflet(){
       
-  ampAmbiant = analogRead(PIN_AMBIANT);
+  //ampAmbiant = analogRead(PIN_AMBIANT);
   //Serial.print("bruit ambiant= ");
   //Serial.print(ampAmbiant);
   amp5khz = analogRead(PIN_SIFFLET);
@@ -29,13 +29,15 @@ void DetecteurSifflet(){
     if (duree == 50) {
       //MOTOR_SetSpeed(0,0);
       //MOTOR_SetSpeed(1,0);
-      Serial.println("5KHz détecté");
-      delay(10000);
+      // Serial.println("5KHz détecté");
+      // delay(10000);
+      return 1;
     }
   } else {
     duree = 0;
     //Serial.println("c'est chill lgros");
   }
+  return 0;
 }
 
 void MonitorSifflet(){

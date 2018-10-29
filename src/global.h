@@ -28,4 +28,14 @@ float rightBias = 0.995;//.994
 int errTotGauche = 0;
 int errTotDroite = 0;
 
+//octogone
+#define FOURCHETTE 1   
+const int LO_POS = 60;
+const int HI_POS = 140;
+
+int flipFlop = 0;
+int stateBalle;
+int tempsGlobal = 0;
+
+int monitorCouleur = 0;
 #endif

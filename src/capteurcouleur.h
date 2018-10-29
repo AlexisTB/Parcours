@@ -3,14 +3,26 @@
 
 #include <ADJDS311.h>
 #include <Wire.h>
-#include "RGBTOHSL.h"
+//#include "RGBTOHSL.h"
+
+#define COULEURBLANC 0
+#define COULEURNOIR 1
+#define COULEURVERT 3
+#define COULEURROUGE 4
+#define COULEURJAUNE 8
+#define COULEURBLEU 12
+
+int couleurTemp[10];
+int indexCouleur = 0;
+
+int couleur = 0;
 
 int sensorLed_pin = 2; //LED on the ADJDS-311
 ADJDS311 colorSensor(sensorLed_pin);
 
 void BruitCouleur(){
-    AX_BuzzerON(3000,200);
-    AX_BuzzerON(1000,200);
+    // AX_BuzzerON(3000,200);
+    // AX_BuzzerON(1000,200);
 }
 
 void InitCapteurCouleur(){
@@ -46,10 +58,12 @@ void InitCapteurCouleur(){
 //   analogWrite(bluePin, map(color.blue, 0, 1024, 0, 255));
 // }
 
-void DetecterCouleur(){
+int DetecterCouleur(){
 
   colorSensor.ledOn();
   RGBC color = colorSensor.read(); //read the color
+  
+  /*
   // RGB color2(color.red, color.green, color.blue);
   // HSL color3 = RGBToHSL(color2);
 
@@ -79,27 +93,7 @@ void DetecterCouleur(){
   //   Serial.print("noir : ");
   //   BruitCouleur();
   // }
-
-  if (color.red > 1000 && color.green > 1000 && color.blue > 1000 && color.clear > 800) {
-      //Serial.print("blanc : ");
-      //BruitCouleur();
-  }else if (color.red > 700 && color.green < 800 && color.blue < 400) {
-      // Serial.print("rouge : ");
-      BruitCouleur();
-  }else if (color.red > 1000 && color.green > 1000 && color.blue < 800 && color.clear > 500) {
-      // Serial.print("jaune : ");
-      BruitCouleur();
-  }else if (color.red < 400 && color.green < 400 && color.blue < 300 && color.clear > 150) {
-      //Serial.print("vert : ");
-      BruitCouleur();
-  }else if (color.red < 400 && color.green < 400 && color.blue > 400 && color.clear > 200) {
-      //Serial.print("bleu : ");
-      BruitCouleur();
-  }else if (color.red < 200 && color.green < 200 && color.blue < 200 && color.clear < 200) {
-      //Serial.print("noir : ");
-      //BruitCouleur();
-  }
-
+  */
 
   // Serial.print(color.red);
   // Serial.print(" | ");
@@ -108,6 +102,61 @@ void DetecterCouleur(){
   // Serial.print(color.blue);
   // Serial.print(" | ");
   // Serial.println(color.clear);
+
+  if (color.red > 1000 && color.green > 1000 && color.blue > 1000 && color.clear > 800) {
+    //   Serial.print("blanc : ");
+      //BruitCouleur();
+      return COULEURBLANC;
+
+  }else if (color.red < 200 && color.green < 200 && color.blue < 200 && color.clear < 200) {
+    //   Serial.print("noir : ");
+      //BruitCouleur();
+      return COULEURNOIR;
+
+  }else if (color.red > 1000 && color.green > 900 && color.blue < 800 && color.clear > 500) {
+    //   Serial.print("jaune : ");
+      BruitCouleur();
+      return COULEURJAUNE;
+
+  }else if (color.red > 700 && color.green < 800 && color.blue < 400) {
+    //   Serial.print("rouge : ");
+      BruitCouleur();
+      return COULEURROUGE;
+
+  }else if (color.red < 400 && color.green < 400 && color.blue > 400 && color.clear > 200) {
+    //   Serial.print("bleu : ");
+      BruitCouleur();
+      return COULEURBLEU;
+
+  }else if (color.red < 400 && color.green < 400 && color.blue < 400 && color.clear < 200) {
+    //   Serial.print("vert : ");
+      BruitCouleur();
+      return COULEURVERT;
+
+  }
+
+
+  return 0;
+}
+
+void AnalyserCouleur(){
+
+  couleurTemp[indexCouleur] = DetecterCouleur();
+  couleur = couleurTemp[indexCouleur];
+  for(int i = 1; i < 9; i++)
+  {
+      if(couleurTemp[i] != couleurTemp[i-1]) {
+          couleur = 0;
+          break;
+      }
+  }
+  if(indexCouleur < 9) indexCouleur++;
+  else indexCouleur = 0;
+  if(monitorCouleur == 1){
+    Serial.print("couleur = ");
+    Serial.println(couleur);
+  }
+
 }
 
 #endif

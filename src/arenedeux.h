@@ -6,46 +6,74 @@
 #include "suivreligne.h"
 #include "avancer.h"
 #include "suivreballe.h"
- 
+#include "attaque.h"
+#include "global.h"
+#include "deplacementoctogone.h"
+#include "detecteursifflet.h"
+
+
 void AreneDeux () {
 
-    SuivreLigne();
+    
+    if (DetecteurSifflet() == 1) {
+        MOTOR_SetSpeed(0,0);
+        MOTOR_SetSpeed(1,0);
+        delay(10000);
+        flipFlop = 0;
+    }
+    
+    if (stateBalle !=2) stateBalle = DetecterBalleAlexis();
 
-    if (DetecterBalleAlexis () == 1) {
-        AX_BuzzerON(1000,200);
+    if (ROBUS_IsBumper(0) || stateBalle == 2) {
+        //si une balle est dans le robot
+        BaisserFourchette();
+        if ( DetecterBalleAlexis() == 0) stateBalle = 0;
+        else stateBalle = 2;
 
-        // if (SuivreBalle() == 1) {
-        //     SERVO_SetAngle(0,80);
-        //     MOTOR_SetSpeed(0,.4);
-        //     MOTOR_SetSpeed(1,.4);
-        // }
-        // else {
-        //     AX_BuzzerON(4000,100);
-        //     delay(200);
-        //     AX_BuzzerON(4000,100);
-        //     SERVO_SetAngle(0,140);
-        //     Depogner();
-        //     ENCODER_Reset(0);
-        //     ENCODER_Reset(1);
-        // }
-        MOTOR_SetSpeed(0,.4);
-        MOTOR_SetSpeed(1,.4);
-        ENCODER_Reset(0);
-        ENCODER_Reset(1);
-        while(!ROBUS_IsBumper(0) && ENCODER_Read(0) < 12000 && ENCODER_Read(1) < 12000){
+        if ( couleur == COULEURJAUNE || couleur == COULEURVERT || couleur == COULEURROUGE) {
+            //Scorer
+            Scorer();
+
+        } else if (couleur == COULEURBLEU) {
+            TournerDroiteTemps(1000);
+        }
+        
+        else {
+            //suivre une ligne jusqu'à une couleur ennemie
+            SuivreLigne();
+        }
+    } 
+    else
+    {
+        LeverFourchette();
+        
+        //NOTE: AMÉLIORATION: si détecte couleur sans balle, se dépogner
+        if ( stateBalle == 1) {
+            AX_BuzzerON(1000,200);
+            //Amélioration possible: Selon flipflop tourner vers la balle;
+
+            //code louche pour s'approcher de la balle
+            MOTOR_SetSpeed(0,vitesseNormale);
+            MOTOR_SetSpeed(1,vitesseNormale);          
+            
+        } else if (stateBalle == -1) {
+            Depogner();
+        } else
+        {
+            SuivreLigne();
+            
+            if (tempsGlobal % 15 == 0 && tempsGlobal > 15) {
+                stateBalle = ScanBalle();
+                
+                if (stateBalle == 1) {
+                    MOTOR_SetSpeed(0,-.4);
+                    MOTOR_SetSpeed(1,.4);
+                    delay(100);
+                } else flipFlop = 0;
+                
+            }
             
         }
-        
-        if (ROBUS_IsBumper(0)) {
-            SERVO_SetAngle(0,80);
-        } 
-        else
-        {
-            SERVO_SetAngle(0,140);
-            Depogner();
-        }
-        
-        
         
     }
     

@@ -11,19 +11,34 @@ int suivreLigne = 1;
 
 
 
-void ScanBalle(){
-  // ENCODER_Reset(0);
-  // MOTOR_SetSpeed(0,.2);
-  // MOTOR_SetSpeed(1,-.2);
+int ScanBalle(){
+  ENCODER_Reset(1);
+  int tempsTemp = tempsGlobal;
+  MOTOR_SetSpeed(0,.4);
+  MOTOR_SetSpeed(1,-.4);
+  
+  while(ENCODER_Read(1) > -7700){
+    if(DetecterBalleRQ() == 1){
+      AX_BuzzerON(1000,100);
+      Serial.println("BALLE");
+      return 1;
+    }
+    SOFT_TIMER_Update();
+    if (tempsGlobal > tempsTemp + 3) {
+      Serial.println("TEMPSMAX");
+      return 0;
+    }
+    
+    
+  }
+  Serial.println("ENCODERMAX");
+
+
+
+  return 0;
   
  
-  // if(DetecterBalleAlexis() == 1){
-  //   AX_BuzzerON(1000,100);
-  //   delay(100);
-    
-    // while(i < 1000){
-    //   suivre
-    // }
+  
     
     // Serial.println("YOO la balle");
     // MOTOR_SetSpeed(0,.4);

@@ -4,22 +4,28 @@
 #include <LibRobus.h>
 
 #define PINHAUT 6
-#define PINBAS 7
+#define PINBAS 5
 
-#define ARRAY_SIZE 5
-int filtre1[ARRAY_SIZE];
-int filtre2[ARRAY_SIZE];
+#define ARRAY_SIZE_INFRAROUGE 5
+
+int filtre1[ARRAY_SIZE_INFRAROUGE];
+int filtre2[ARRAY_SIZE_INFRAROUGE];
+
+// int distanceHautTemp[ARRAY_SIZE_INFRAROUGE];
+// int distanceBasTemp[ARRAY_SIZE_INFRAROUGE];
 
 
-const int REP = 2;
+const int REP = 5;
 int distanceirhaut;
 int distanceirhautMAX;
 int distanceirbas;
 int distanceirbasMAX;
 
+int indexInfrarouge = 0;
 
-int DistanceIR(int capteurIR){
-  return (int)(9325.1 * pow(capteurIR,-1.263));
+
+int DistanceIR(int pin){
+  return (int)(9325.1 * pow(analogRead(pin),-1.263));
 }
 
 void getDistance(){
@@ -28,9 +34,9 @@ void getDistance(){
   distanceirbasMAX = 0;
   for(int i = 0; i < REP; i++)
   {
-    distanceirhaut = DistanceIR(analogRead(PINHAUT));
+    distanceirhaut = DistanceIR(PINHAUT);
     if(distanceirhaut > distanceirhautMAX) distanceirhautMAX = distanceirhaut;
-    distanceirbas = DistanceIR(analogRead(PINBAS));
+    distanceirbas = DistanceIR(PINBAS);
     if(distanceirbas > distanceirbasMAX) distanceirbasMAX = distanceirbas;
     //delay(5);
   }
@@ -39,15 +45,16 @@ void getDistance(){
   
 }
 
+int DetecterBalleRQ(){
+  getDistance();
+  if (distanceirhaut > distanceirbas + 6  && distanceirbas < 15 && distanceirhaut > 5) return 1; //SI balle est visible
+  return 0;
+}
 
 int DetecterBalleAlexis(){
 
-  distanceirhaut = 0;
-  distanceirbas = 0;
-
-
   //Ring buffer pour filter les IRS
-  for (int j = ARRAY_SIZE - 1 ; j > 0 ; j--)
+  for (int j = ARRAY_SIZE_INFRAROUGE - 1 ; j > 0 ; j--)
   {
     // Serial.println(j);
     // for(int i = 0; i < ARRAY_SIZE; i++)
@@ -61,10 +68,13 @@ int DetecterBalleAlexis(){
 
   }
   
-  filtre1[0] =  (int)(9325.1 * pow(analogRead(PINHAUT),-1.263));
-  filtre2[0] =  (int)(9325.1 * pow(analogRead(PINBAS),-1.263));
+  filtre1[0] =  DistanceIR(PINHAUT);
+  filtre2[0] =  DistanceIR(PINBAS);
 
-  for(int i = 0; i < ARRAY_SIZE; i++)
+  //moyenne du ring buffer
+  distanceirhaut = 0;
+  distanceirbas = 0;
+  for(int i = 0; i < ARRAY_SIZE_INFRAROUGE; i++)
   {
     //Serial.print(i);
     //Serial.print(" = ");
@@ -72,32 +82,55 @@ int DetecterBalleAlexis(){
     distanceirhaut += filtre1[i];
     distanceirbas += filtre2[i];
   }
-  
-  distanceirhaut = distanceirhaut/ARRAY_SIZE;
-  distanceirbas = distanceirbas/ARRAY_SIZE;
+
+  distanceirhaut = distanceirhaut/ARRAY_SIZE_INFRAROUGE;
+  distanceirbas = distanceirbas/ARRAY_SIZE_INFRAROUGE;
+
 
   // Serial.print("distanceirhaut : ");
   // Serial.print(distanceirhaut);
 
   // Serial.print("  ||  distanceirbas : ");
   // Serial.println(distanceirbas);
-  
 
-  if (distanceirhaut > distanceirbas + 6  && distanceirbas < 15 && distanceirhaut > 5) return 1;
+  if (distanceirhaut < 10) return -1; //SI mur
+  else if (distanceirhaut > distanceirbas + 6  && distanceirbas < 7 && distanceirhaut > 5) return 2; //SI balle proche en état de se faire attraper
+  else if (distanceirhaut > distanceirbas + 6  && distanceirbas < 15 && distanceirhaut > 5) return 1; //SI balle est visible
   else return 0;
 }
 
 void MonitorInfrarouge(){
   
-  getDistance();
+  int etatBalle = DetecterBalleAlexis();
 
   Serial.print("distanceirhaut : ");
-  Serial.print(distanceirhautMAX);
+  Serial.print(distanceirhaut);
 
   Serial.print("  ||  distanceirbas : ");
-  Serial.println(distanceirbasMAX);
+  Serial.print(distanceirbas);
+
+  Serial.print("  ||  état balle : ");
+  Serial.println(etatBalle);
 } 
 
+// void AnalyserInfrarouge(){
 
+
+//     distanceBasTemp[indexInfrarouge] = DistanceIR(PINBAS);
+//     distanceBasTemp[indexInfrarouge] = DistanceIR(PINBAS);
+
+    
+//     couleur = couleurTemp[indexInfrarouge];
+//     for(int i = 1; i < ARRAY_SIZE_INFRAROUGE; i++)
+//     {
+//         if(couleurTemp[i] != couleurTemp[i-1]) {
+//             couleur = 0;
+//             break;
+//         }
+//     }
+//     if(indexInfrarouge < 9) indexInfrarouge++;
+//     else indexInfrarouge = 0;
+    
+// }
 
 #endif
