@@ -28,6 +28,7 @@ Librairies de functions
 #include "detecteursifflet.h"
 #include "attaque.h"
 #include "deplacementoctogone.h"
+#include "PIDfrancis.h"
 
 /* ****************************************************************************
 Variables globales et defines
@@ -71,30 +72,30 @@ void setup(){
   Serial.begin(9600);
 
 
-  SERVO_Enable(FOURCHETTE);  
-  LeverFourchette();
+  // SERVO_Enable(FOURCHETTE);  
+  // LeverFourchette();
   //SERVO_Disable(0);
 
-  InitCapteurCouleur();
+  //InitCapteurCouleur();
 
   //SOFT timage
 
-  SOFT_TIMER_SetCallback(ANALYSERCOULEUR,&AnalyserCouleur);
-  SOFT_TIMER_SetDelay(ANALYSERCOULEUR,10);
-  SOFT_TIMER_SetRepetition(ANALYSERCOULEUR,-1);
-  SOFT_TIMER_Enable(ANALYSERCOULEUR);
+  // SOFT_TIMER_SetCallback(ANALYSERCOULEUR,&AnalyserCouleur);
+  // SOFT_TIMER_SetDelay(ANALYSERCOULEUR,10);
+  // SOFT_TIMER_SetRepetition(ANALYSERCOULEUR,-1);
+  // SOFT_TIMER_Enable(ANALYSERCOULEUR);
 
 
 
-  SOFT_TIMER_SetCallback(TIMER,&FonctionTestTempsGlobal);
-  SOFT_TIMER_SetDelay(TIMER,1000);
-  SOFT_TIMER_SetRepetition(TIMER,-1);
-  SOFT_TIMER_Enable(TIMER);
+  // SOFT_TIMER_SetCallback(TIMER,&FonctionTestTempsGlobal);
+  // SOFT_TIMER_SetDelay(TIMER,1000);
+  // SOFT_TIMER_SetRepetition(TIMER,-1);
+  // SOFT_TIMER_Enable(TIMER);
 
 
-  while(!ROBUS_IsBumper(3)){
+  //while(!ROBUS_IsBumper(3)){
     //wait for rear bumper to be pressed
-  }
+  //}
 
   // BaisserFourchette();
   // delay(1000);
@@ -112,7 +113,7 @@ Fonctions de boucle infini (loop())
 
 void loop() {
 
- SOFT_TIMER_Update(); // A decommenter pour utiliser des compteurs logiciels 
+//  SOFT_TIMER_Update(); // A decommenter pour utiliser des compteurs logiciels 
   
   /* *****************
    // Code du goaler
@@ -193,6 +194,7 @@ void loop() {
   //MonitorSifflet();
   //DetecteurSifflet();
   //TestCapteurs();
+  ligneDroite(0.25);
 
   delay(10);// Delais pour décharger le CPU
 
@@ -207,31 +209,31 @@ void loop() {
 
 
 
-void TestCapteurs(){
+// void TestCapteurs(){
   
-  delay(500);
-  while(!ROBUS_IsBumper(3)){
-    MonitorDetecteurLigne();
-  }
-  delay(500);
+//   delay(500);
+//   while(!ROBUS_IsBumper(3)){
+//     MonitorDetecteurLigne();
+//   }
+//   delay(500);
 
-  while(!ROBUS_IsBumper(3)){
-    MonitorInfrarouge();
-  }
-  delay(500);
+//   while(!ROBUS_IsBumper(3)){
+//     MonitorInfrarouge();
+//   }
+//   delay(500);
 
-  while(!ROBUS_IsBumper(3)){
-    monitorCouleur = 1;
-    AnalyserCouleur();
-    delay(20);
-  }
-  monitorCouleur = 0;
-  delay(500);
+//   while(!ROBUS_IsBumper(3)){
+//     monitorCouleur = 1;
+//     AnalyserCouleur();
+//     delay(20);
+//   }
+//   monitorCouleur = 0;
+//   delay(500);
 
-  while(!ROBUS_IsBumper(3)){
-    MonitorSifflet();
-  }
+//   while(!ROBUS_IsBumper(3)){
+//     MonitorSifflet();
+//   }
 
 
-}
+//}
 

@@ -1,5 +1,5 @@
-#ifndef AVANCER_H
-#define AVANCER_H
+#ifndef PIDFRANCIS_H
+#define PIDFRANCIS_H
 
 #include <QTRSensors.h>
 #include <LibRobus.h>
@@ -15,51 +15,50 @@ Date: Derniere date de modification
 
 const int GAUCHE = 0 ; 
 const int DROITE = 1 ;
+const double CENTRE = 3500 ;
+const int NB_SENSORS = 8 ; 
+#define NUM_SAMPLES_PER_SENSOR  4  // average 4 analog samples per sensor reading
+#define EMITTER_PIN QTR_NO_EMITTER_PIN  // emitter is controlled by digital pin 2
 
 
-
-void goInAStraightLineDammit(double p_vitesseCible, float p_distanceCible)
+void ligneDroite(double p_vitesseCible)
 {
+  
+  
+  unsigned char valeursCapteurs[NB_SENSORS] {0,1,2,3,4,5,6,7};
+  unsigned int valeurSensors[NB_SENSORS] {0,0,0,0,0,0,0,0};
+  QTRSensorsAnalog capteurs(valeursCapteurs , NB_SENSORS,NUM_SAMPLES_PER_SENSOR,EMITTER_PIN);
+  for (int i = 0; i < 100; i++)  // make the calibration take about 10 seconds
+  {
+    capteurs.calibrate();       // reads all sensors 10 times at 2.5 ms per six sensors (i.e. ~25 ms per call)
+  }
+
   const double TEMPS_ATTENTE = 100.0;
-  const float P = 0.0045; 
-  const float I = 0.215 ; 
-  const float D = 0.00075 ; 
+  const double P = 0.000048;// 0.00004
+  const double I = 0.00000032 ; //0.0000002
+  const double D = 0.000075 ; //0.000025
   double erreurI = 0 ; 
-
-  MOTOR_SetSpeed(GAUCHE, p_vitesseCible/TICK_PAR_SECONDE_V_MAX);
-  MOTOR_SetSpeed(DROITE, p_vitesseCible/TICK_PAR_SECONDE_V_MAX);
-
-  int totalTickMaitre = 0 ;
-  int totalTickEsclave = 0 ;
-
-  int ancienTotalTickMaitre = 0 ;
-  int ancienTotalTickEsclave = 0 ;
-
-  ENCODER_ReadReset(GAUCHE);
-  ENCODER_ReadReset(DROITE);
-
-  float distanceCumule = 0 ; 
   float ancienneErreur = 0 ; 
 
-  while(distanceCumule < p_distanceCible)
-  {
-    delay(TEMPS_ATTENTE);
+  MOTOR_SetSpeed(GAUCHE, p_vitesseCible);
+  MOTOR_SetSpeed(DROITE, p_vitesseCible);
 
-    totalTickMaitre = ENCODER_Read (GAUCHE);
-    totalTickEsclave = ENCODER_Read(DROITE);
-    distanceCumule = CIRCONFERENCE * totalTickMaitre/TICK_PAR_TOUR;
-    
-    double erreurP = ((totalTickMaitre - ancienTotalTickMaitre)-(totalTickEsclave - ancienTotalTickEsclave))/TEMPS_ATTENTE;
-    erreurI += (totalTickMaitre - ancienTotalTickMaitre)-(totalTickEsclave - ancienTotalTickEsclave) ; 
+
+
+  while(true)
+  {
+
+    delay(TEMPS_ATTENTE);
+    int position = capteurs.readLine(valeurSensors);
+    Serial.println(position); 
+
+    double erreurP = position - CENTRE;
+    erreurI += erreurP  ; 
     double erreurD = erreurP - ancienneErreur;
     ancienneErreur = erreurP;
 
-    ancienTotalTickEsclave = totalTickEsclave;
-    ancienTotalTickMaitre = totalTickMaitre;
-
-    MOTOR_SetSpeed(DROITE, p_vitesseCible + P * erreurP + I * erreurI/TEMPS_ATTENTE + D * erreurD*TEMPS_ATTENTE);
-    Serial.println(erreurI);
+    MOTOR_SetSpeed(DROITE, p_vitesseCible + P * erreurP + I * erreurI + D * erreurD);
   }
-}
+ }
 
 #endif 
