@@ -168,7 +168,7 @@ void loop() {
   //   ENCODER_Reset(1);
   // }
   // else{
-  AreneDeux();
+  //AreneDeux();
   // }
   //ScanBalle();
   // while(!ROBUS_IsBumper(3)){
